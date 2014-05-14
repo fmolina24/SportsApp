@@ -1,15 +1,16 @@
 package com.example.sportsapp;
-import org.json.*;
-
-
-
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DecimalFormat;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -19,32 +20,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.json.XML;
 
-
-
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import com.google.android.gms.location.LocationClient;
-import com.model.sportsapp.NHLgame;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.ListFragment;
 import android.content.Context;
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.model.sportsapp.NHLgame;
 
 
 public class scoresNHLFragment extends ListFragment {
@@ -106,6 +101,9 @@ public class scoresNHLFragment extends ListFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			TextView home;
 			TextView away;
+			TextView homeScore;
+			TextView awayScore;
+			
 			
 			//reuse converView if you can to speed up scrolling on listview
 			if(convertView == null){
@@ -114,25 +112,34 @@ public class scoresNHLFragment extends ListFragment {
 				convertView = inflator.inflate(R.layout.row, parent, false);
 				convertView.setTag(R.id.homeLabel, convertView.findViewById(R.id.homeLabel));
 				convertView.setTag(R.id.awayLabel, convertView.findViewById(R.id.awayLabel));
-				
+				convertView.setTag(R.id.homeScore, convertView.findViewById(R.id.homeScore));
+				convertView.setTag(R.id.awayScore, convertView.findViewById(R.id.awayScore));
 				
 			}
 			
 			home = (TextView) convertView.getTag(R.id.homeLabel);
 			away = (TextView) convertView.getTag(R.id.awayLabel);
+			homeScore = (TextView) convertView.getTag(R.id.homeScore);
+			awayScore = (TextView) convertView.getTag(R.id.awayScore);
 			
 			home.setText(myList.get(position).getHome_team());
 			away.setText(myList.get(position).getAway_team());
+			if(myList.get(position).getHome_goals()==null){
+				homeScore.setText("");
+			}else{
+				homeScore.setText(myList.get(position).getHome_goals().toString());
+			}
+			if(myList.get(position).getAway_goals()==null){
+				awayScore.setText("");
+			}else{
+				awayScore.setText(myList.get(position).getAway_goals().toString());
+			}
 			
 			return convertView;
 		}
-		
-		
-		
-		
-		
 
 	}
+	
 
 	private class JSONResponseHandler implements ResponseHandler<List<NHLgame>> {
 
@@ -152,25 +159,84 @@ public class scoresNHLFragment extends ListFragment {
 				JSONObject responseObject = (JSONObject) new JSONTokener(
 						JSONResponse).nextValue();
 				Log.i("info", "after response object");
+				
 		
 				// Extract value of "list" key -- a List
 				JSONArray games = responseObject
 						.getJSONArray("games");
 
-				// Iterate over earthquakes list
+				// Iterate over game list
 				for (int idx = 0; idx < games.length(); idx++) {
-					String xml = games.getString(0);
-					try{
+					String xml = games.getString(idx);
 					JSONObject game = XML.toJSONObject(xml);
 					String jsonPrettyPrintString = game.toString(4);
-		            Log.i("jsonOject", jsonPrettyPrintString);
-					}catch(JSONException je){
-						je.printStackTrace();
+		            Log.i("game", jsonPrettyPrintString);
+					JSONObject entry = game.getJSONObject("ticker-entry");
+					
+					//GET GAME ID
+					int id = entry.getInt("gamecode");
+					
+					//GET GAMESTATE OBJECT
+					JSONObject gamestate = entry.getJSONObject("gamestate");
+					
+					//GET GAME STATUS
+					String status = gamestate.getString("status");
+					
+					
+					
+					//GET GAME TIME
+					String time = gamestate.getString("gametime");
+					String date = gamestate.getString("gamedate");
+					SimpleDateFormat sdf = new SimpleDateFormat("M/d h:mm a", Locale.US);
+					Date gameDate = null;
+					try {
+						gameDate = sdf.parse(date + " " + time);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
+					
+					//GET TV BROADCAST
+					String tv = gamestate.getString("tv");
+					
+					
+					//GET HOME AND AWAY TEAM OBJECTS
+					JSONObject homeTeam = entry.getJSONObject("home-team");
+					JSONObject awayTeam = entry.getJSONObject("visiting-team");
+					
+					//GET NICKNAMES
+					String homeNickname = homeTeam.getString("nickname");
+					String awayNickname = awayTeam.getString("nickname");
+					
+					//GET TEAM LOGOS
+					JSONObject homeLogoObject = homeTeam.getJSONObject("team-logo");
+					String homeLogo = homeLogoObject.getString("link");
+					
+					JSONObject awayLogoObject = awayTeam.getJSONObject("team-logo");
+					String awayLogo = awayLogoObject.getString("link");
+					Integer homeScore;
+					Integer awayScore;
+					
+					
+					//GET SCORES
+					if(!status.equalsIgnoreCase("Pre-Game")){
+						JSONArray homeScoreArr = homeTeam.getJSONArray("score");
+						homeScore = homeScoreArr.getInt(0);
+						Log.i("scores", homeScore.toString());
+						JSONArray awayScoreArr = awayTeam.getJSONArray("score");
+						awayScore = awayScoreArr.getInt(0);
+						Log.i("scores", awayScore.toString());
+					}else{
+						homeScore =null;
+						awayScore = null;
+					}
+		
 					
 
 					
-					//result.add(new NHLgame(id,home,away,0,0,"ok"));
+					result.add(new NHLgame(id,homeNickname,awayNickname,
+							homeScore,awayScore,
+							status,gameDate,homeLogo,awayLogo,tv));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -179,6 +245,7 @@ public class scoresNHLFragment extends ListFragment {
 		}
 		
 	}
+	
 
 
 }

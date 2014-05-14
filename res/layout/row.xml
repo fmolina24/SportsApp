@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal" >
 
     <TextView
-        android:id="@+id/vs"
+        android:id="@+id/awayScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/homeLabel"
-        android:layout_alignBottom="@+id/homeLabel"
-        android:layout_centerHorizontal="true"
-        android:text="\@" />
+        android:text="0" />
 
     <TextView
         android:id="@+id/awayLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/homeLabel"
-        android:layout_alignParentLeft="true"
-        android:text="TEXT"
-        android:textSize="25sp" />
+        android:text="awayTeam" />
+
+    <TextView
+        android:id="@+id/vs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\@" />
 
     <TextView
         android:id="@+id/homeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="38dp"
-        android:text="TEST"
-        android:textSize="25sp" />
+        android:text="homeTeam" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/homeScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0" />
+
+</LinearLayout>

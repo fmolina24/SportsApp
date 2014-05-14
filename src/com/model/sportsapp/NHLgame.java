@@ -1,24 +1,78 @@
 package com.model.sportsapp;
 
+import java.util.Date;
+
 
 public class NHLgame {
 	private int gameid;
 	private String home_team;
 	private String away_team;
-	private int home_goals;
-	private int away_goals;
+	private Integer home_goals;
+	private Integer away_goals;
 	private String status;
+	private Date time;
+	private String homeLogo;
+	private String awayLogo;
+	private String tv;
 	
-	public NHLgame(int gameid,String home_team,String away_team,int home_gaols,int away_goals,String status){
+	
+	public NHLgame(int gameid,String home_team,String away_team,Integer home_gaols,
+			Integer away_goals,String status,Date time,String homeLogo,
+			String awayLogo,String tv){
 		this.gameid = gameid;
 		this.home_team = home_team;
 		this.away_team = away_team;
 		this.home_goals = home_goals;
 		this.away_goals = away_goals;
 		this.status = status;
+		this.time = time;
+		this.homeLogo = homeLogo;
+		this.awayLogo = awayLogo;
+		this.tv = tv;
+		
 		
 	}
 	
+
+	public Date getTime() {
+		return time;
+	}
+
+
+	public void setTime(Date time) {
+		this.time = time;
+	}
+
+
+	public String getHomeLogo() {
+		return homeLogo;
+	}
+
+
+	public void setHomeLogo(String homeLogo) {
+		this.homeLogo = homeLogo;
+	}
+
+
+	public String getAwayLogo() {
+		return awayLogo;
+	}
+
+
+	public void setAwayLogo(String awayLogo) {
+		this.awayLogo = awayLogo;
+	}
+
+
+	public String getTv() {
+		return tv;
+	}
+
+
+	public void setTv(String tv) {
+		this.tv = tv;
+	}
+
 
 	public String getStatus() {
 		return status;
@@ -54,7 +108,7 @@ public class NHLgame {
 		this.away_team = away_team;
 	}
 
-	public int getHome_goals() {
+	public Integer getHome_goals() {
 		return home_goals;
 	}
 
@@ -62,7 +116,7 @@ public class NHLgame {
 		this.home_goals = home_goals;
 	}
 
-	public int getAway_goals() {
+	public Integer getAway_goals() {
 		return away_goals;
 	}
 
