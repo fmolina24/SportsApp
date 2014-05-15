@@ -1,37 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/awayScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0" />
+	    <LinearLayout
+	      android:layout_width="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:orientation="vertical"
+	      android:layout_gravity="center_horizontal"
+	      android:paddingTop="20dp">
+		
+	        <TextView
+	            android:id="@+id/awayLabel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:paddingLeft="16dp"
+	            android:paddingRight="16dp"
+	            android:layout_gravity="left"
+	            android:text="Anaheim Ducks" />
+	        
+	        <TextView
+	            android:id="@+id/awayScore"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_horizontal"
+	            android:text="5"
+	            android:textSize="36sp" />
 
-    <TextView
-        android:id="@+id/awayLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="awayTeam" />
+	    </LinearLayout>
 
     <TextView
         android:id="@+id/vs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="\@" />
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="\@"
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/homeLabel"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="homeTeam" />
+        android:orientation="vertical"
+        android:paddingTop="20dp" >
 
-    <TextView
-        android:id="@+id/homeScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0" />
+        <TextView
+            android:id="@+id/homeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="LA Kings" />
+
+        <TextView
+            android:id="@+id/homeScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="0"
+            android:textSize="36sp" />
+
+    </LinearLayout>
 
 </LinearLayout>
