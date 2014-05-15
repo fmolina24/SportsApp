@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,14 +57,19 @@ public class scoresNHLFragment extends ListFragment {
 	private class HttpGetTask extends AsyncTask<Void, Void, List<NHLgame>> {
 
 		private static final String TAG = "HttpGetTask";
-
-		private static final String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport=NHL&period=20140513";
+		
+		Date today = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+		String todayDate = df.format(today);
+		
+		
+		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport=NHL&period="+todayDate;
 
 		AndroidHttpClient mClient = AndroidHttpClient.newInstance("");
 
 		@Override
 		protected List<NHLgame> doInBackground(Void... params) {
-			
+			Log.i("date",todayDate);
 			HttpGet request = new HttpGet(URL);
 			JSONResponseHandler responseHandler = new JSONResponseHandler();
 			try {
