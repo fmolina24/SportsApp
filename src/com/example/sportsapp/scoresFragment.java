@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -21,7 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.json.XML;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
@@ -39,22 +38,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.model.sportsapp.Game;
 
-import com.model.sportsapp.NHLgame;
 
-
-public class scoresNHLFragment extends ListFragment {
+public class scoresFragment extends ListFragment {
+	String sport="";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		sport = getArguments().getString("sport");
 		new HttpGetTask().execute();
 		
 	}
 	
 	
 
-	private class HttpGetTask extends AsyncTask<Void, Void, List<NHLgame>> {
+	private class HttpGetTask extends AsyncTask<Void, Void, List<Game>> {
 
 		private static final String TAG = "HttpGetTask";
 		
@@ -63,12 +63,12 @@ public class scoresNHLFragment extends ListFragment {
 		String todayDate = df.format(today);
 		
 		
-		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport=NHL&period="+todayDate;
+		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period="+todayDate;
 
 		AndroidHttpClient mClient = AndroidHttpClient.newInstance("");
 
 		@Override
-		protected List<NHLgame> doInBackground(Void... params) {
+		protected List<Game> doInBackground(Void... params) {
 			Log.i("date",todayDate);
 			HttpGet request = new HttpGet(URL);
 			JSONResponseHandler responseHandler = new JSONResponseHandler();
@@ -87,17 +87,17 @@ public class scoresNHLFragment extends ListFragment {
 
  
 		@Override
-		protected void onPostExecute(List<NHLgame> result) {
+		protected void onPostExecute(List<Game> result) {
 			if (null != mClient)
 				mClient.close();
 			setListAdapter(new MyAdapter(getActivity(),R.layout.row,result));
 		}
 	}
 	class MyAdapter extends ArrayAdapter{
-		private List<NHLgame> myList;
+		private List<Game> myList;
 		private Context context;
 
-		public MyAdapter(Context context, int resource, List<NHLgame> result) {
+		public MyAdapter(Context context, int resource, List<Game> result) {
 			super(context, resource, result);
 			myList = result;
 			this.context = context;
@@ -128,17 +128,17 @@ public class scoresNHLFragment extends ListFragment {
 			homeScore = (TextView) convertView.getTag(R.id.homeScore);
 			awayScore = (TextView) convertView.getTag(R.id.awayScore);
 			
-			home.setText(myList.get(position).getHome_team());
-			away.setText(myList.get(position).getAway_team());
-			if(myList.get(position).getHome_goals()==null){
+			home.setText(myList.get(position).getHomeTeam());
+			away.setText(myList.get(position).getAwayTeam());
+			if(myList.get(position).getHomeScore()==null){
 				homeScore.setText("");
 			}else{
-				homeScore.setText(myList.get(position).getHome_goals().toString());
+				homeScore.setText(myList.get(position).getHomeScore().toString());
 			}
-			if(myList.get(position).getAway_goals()==null){
+			if(myList.get(position).getAwayScore()==null){
 				awayScore.setText("");
 			}else{
-				awayScore.setText(myList.get(position).getAway_goals().toString());
+				awayScore.setText(myList.get(position).getAwayScore().toString());
 			}
 			
 			return convertView;
@@ -147,12 +147,12 @@ public class scoresNHLFragment extends ListFragment {
 	}
 	
 
-	private class JSONResponseHandler implements ResponseHandler<List<NHLgame>> {
+	private class JSONResponseHandler implements ResponseHandler<List<Game>> {
 
 		@Override
-		public List<NHLgame> handleResponse(HttpResponse response)
+		public List<Game> handleResponse(HttpResponse response)
 				throws ClientProtocolException, IOException {
-			List<NHLgame> result = new ArrayList<NHLgame>();
+			List<Game> result = new ArrayList<Game>();
 			String JSONResponse = new BasicResponseHandler()
 					.handleResponse(response);
 			Log.i("info", "starting json handler");
@@ -240,7 +240,7 @@ public class scoresNHLFragment extends ListFragment {
 					
 
 					
-					result.add(new NHLgame(id,homeNickname,awayNickname,
+					result.add(new Game(id,homeNickname,awayNickname,
 							homeScore,awayScore,
 							status,gameDate,homeLogo,awayLogo,tv));
 				}

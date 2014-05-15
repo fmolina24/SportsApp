@@ -52,12 +52,15 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
+		Bundle bundle = new Bundle();
+		scoresFragment frag = new scoresFragment();
 		if(position==1){
+			bundle.putString("sport", "NBA");
+			frag.setArguments(bundle);
 			mFragmentManager = getFragmentManager();
 			FragmentTransaction fragmentTransaction = mFragmentManager
 					.beginTransaction();
-			fragmentTransaction.add(R.id.container,
-					new scoresNHLFragment());
+			fragmentTransaction.add(R.id.container,frag);
 			fragmentTransaction.commit();
 			
 		}else{
