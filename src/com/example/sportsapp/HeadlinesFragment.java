@@ -204,8 +204,6 @@ public class HeadlinesFragment extends ListFragment {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					System.out.println(imgLink + "  IMAGE LINK HERE!!!!!");
 					result.add(new Headline(headLine,description,imgLink,date,storyLink));
 				}
 			} catch (JSONException e) {
