@@ -148,7 +148,6 @@ public class HeadlinesFragment extends ListFragment {
 			headline.setText(myList.get(position).getHeadline());
 			desc.setText(myList.get(position).getDescription());
 			date.setText(df.format(myList.get(position).getPublished()));
-			System.out.println(myList.get(position).getUrl() + " LINKS HERE!!!!!!!!!!!!!!");
 			String linkText = "<a href='"+myList.get(position).getUrl()+"'>See more</a>";
 			url.setText(Html.fromHtml(linkText));
 			url.setMovementMethod(LinkMovementMethod.getInstance());
@@ -192,7 +191,6 @@ public class HeadlinesFragment extends ListFragment {
 					JSONObject img = images.getJSONObject(0);
 					JSONObject links = headline.getJSONObject("links");
 					JSONObject webLinks = links.getJSONObject("web");
-					System.out.println(links + " LINKS ARRAY HERE!!!!!");
 					String imgLink = img.getString("url");
 					String storyLink = webLinks.getString("href");
 					//GET PUBLISHED DATE
@@ -207,7 +205,7 @@ public class HeadlinesFragment extends ListFragment {
 						e.printStackTrace();
 					}
 					
-					
+					System.out.println(imgLink + "  IMAGE LINK HERE!!!!!");
 					result.add(new Headline(headLine,description,imgLink,date,storyLink));
 				}
 			} catch (JSONException e) {

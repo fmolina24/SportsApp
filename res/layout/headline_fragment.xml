@@ -36,6 +36,6 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/description"
         android:text="See more..."
-        android:textSize="13sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>
