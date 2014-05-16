@@ -52,23 +52,32 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
-		Bundle bundle = new Bundle();
-		scoresFragment frag = new scoresFragment();
+		
 		if(position==1){
+			Bundle bundle = new Bundle();
+			scoresFragment frag = new scoresFragment();
 			bundle.putString("sport", "NBA");
 			frag.setArguments(bundle);
 			mFragmentManager = getFragmentManager();
 			FragmentTransaction fragmentTransaction = mFragmentManager
 					.beginTransaction();
-			fragmentTransaction.add(R.id.container,frag);
+			fragmentTransaction.replace(R.id.container,frag);
 			fragmentTransaction.commit();
 			
 		}else{
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager
-				.beginTransaction()
-				.replace(R.id.container,
-						PlaceholderFragment.newInstance(position + 1)).commit();
+			
+			//SEND ARGUMENTS TO THE FRAGMENT
+//			Bundle bundle = new Bundle();
+			HeadlinesFragment headfrag = new HeadlinesFragment();
+//			bundle.putString("sport", "hockey");
+//			bundle.putString("league","nhl");
+//			headfrag.setArguments(bundle);
+			
+			mFragmentManager = getFragmentManager();
+			FragmentTransaction fragmentTransaction = mFragmentManager
+					.beginTransaction();
+			fragmentTransaction.replace(R.id.container,headfrag);
+			fragmentTransaction.commit();
 		}
 	}
 
@@ -118,48 +127,6 @@ public class MainActivity extends ActionBarActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		private static final String ARG_SECTION_NUMBER = "section_number";
-
-		/**
-		 * Returns a new instance of this fragment for the given section number.
-		 */
-		public static PlaceholderFragment newInstance(int sectionNumber) {
-			PlaceholderFragment fragment = new PlaceholderFragment();
-			Bundle args = new Bundle();
-			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-			fragment.setArguments(args);
-			return fragment;
-		}
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
-			TextView textView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			textView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
-			return rootView;
-		}
-
-		@Override
-		public void onAttach(Activity activity) {
-			super.onAttach(activity);
-			((MainActivity) activity).onSectionAttached(getArguments().getInt(
-					ARG_SECTION_NUMBER));
-		}
-	}
+	
 
 }
