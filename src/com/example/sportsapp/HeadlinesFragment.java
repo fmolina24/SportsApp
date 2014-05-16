@@ -32,7 +32,10 @@ import android.net.Uri;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.format.DateFormat;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,7 +125,7 @@ public class HeadlinesFragment extends ListFragment {
 			TextView headline;
 			TextView desc;
 			TextView date;
-			
+			TextView url;
 			
 			//reuse converView if you can to speed up scrolling on listview
 			if(convertView == null){
@@ -133,16 +136,21 @@ public class HeadlinesFragment extends ListFragment {
 				convertView.setTag(R.id.headline, convertView.findViewById(R.id.headline));
 				convertView.setTag(R.id.description, convertView.findViewById(R.id.description));
 				convertView.setTag(R.id.date, convertView.findViewById(R.id.date));
+				convertView.setTag(R.id.seeMore, convertView.findViewById(R.id.seeMore));
 			}
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 			
 			headline = (TextView) convertView.getTag(R.id.headline);
 			desc = (TextView) convertView.getTag(R.id.description);
 			date = (TextView) convertView.getTag(R.id.date);
-			
+			url = (TextView)convertView.getTag(R.id.seeMore);
+
 			headline.setText(myList.get(position).getHeadline());
 			desc.setText(myList.get(position).getDescription());
 			date.setText(df.format(myList.get(position).getPublished()));
+			String linkText = "<a href='"+myList.get(position).getUrl()+"'>See more</a>";
+			url.setText(Html.fromHtml(linkText));
+			url.setMovementMethod(LinkMovementMethod.getInstance());
 			return convertView;
 		}
 
@@ -181,9 +189,10 @@ public class HeadlinesFragment extends ListFragment {
 					//GET FIRST IMAGE
 					JSONArray images = headline.getJSONArray("images");
 					JSONObject img = images.getJSONObject(0);
-					
+					JSONObject links = headline.getJSONObject("links");
+					JSONObject webLinks = links.getJSONObject("web");
 					String imgLink = img.getString("url");
-					
+					String storyLink = webLinks.getString("href");
 					//GET PUBLISHED DATE
 					String rawDate = headline.getString("published");
 					Log.i("date", rawDate);
@@ -195,9 +204,7 @@ public class HeadlinesFragment extends ListFragment {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					
-					result.add(new Headline(headLine,description,imgLink,date));
+					result.add(new Headline(headLine,description,imgLink,date,storyLink));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
