@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -20,12 +21,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.json.XML;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
@@ -38,6 +41,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.model.sportsapp.Game;
 
 
@@ -63,8 +67,9 @@ public class scoresFragment extends ListFragment {
 		String todayDate = df.format(today);
 		
 		
-		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period="+todayDate;
-
+//		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period="+todayDate;
+		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period=20140514";
+		
 		AndroidHttpClient mClient = AndroidHttpClient.newInstance("");
 
 		@Override
@@ -109,6 +114,8 @@ public class scoresFragment extends ListFragment {
 			TextView away;
 			TextView homeScore;
 			TextView awayScore;
+			ImageView awayLogo;
+			ImageView homeLogo;
 			
 			
 			//reuse converView if you can to speed up scrolling on listview
@@ -120,6 +127,8 @@ public class scoresFragment extends ListFragment {
 				convertView.setTag(R.id.awayLabel, convertView.findViewById(R.id.awayLabel));
 				convertView.setTag(R.id.homeScore, convertView.findViewById(R.id.homeScore));
 				convertView.setTag(R.id.awayScore, convertView.findViewById(R.id.awayScore));
+				convertView.setTag(R.id.awayLogo, convertView.findViewById(R.id.awayLogo));
+				convertView.setTag(R.id.homeLogo, convertView.findViewById(R.id.homeLogo));
 				
 			}
 			
@@ -127,6 +136,16 @@ public class scoresFragment extends ListFragment {
 			away = (TextView) convertView.getTag(R.id.awayLabel);
 			homeScore = (TextView) convertView.getTag(R.id.homeScore);
 			awayScore = (TextView) convertView.getTag(R.id.awayScore);
+			homeLogo = (ImageView) convertView.getTag(R.id.homeLogo);
+			awayLogo = (ImageView) convertView.getTag(R.id.awayLogo);
+			
+			Drawable homeTeamLogo = LoadImageFromWebOperations(myList.get(position).getHomeLogo());
+			Drawable awayTeamLogo = LoadImageFromWebOperations(myList.get(position).getAwayLogo());
+			
+			homeLogo.setImageDrawable(homeTeamLogo);
+			awayLogo.setImageDrawable(awayTeamLogo);
+			
+			
 			
 			home.setText(myList.get(position).getHomeTeam());
 			away.setText(myList.get(position).getAwayTeam());
@@ -217,9 +236,12 @@ public class scoresFragment extends ListFragment {
 					//GET TEAM LOGOS
 					JSONObject homeLogoObject = homeTeam.getJSONObject("team-logo");
 					String homeLogo = homeLogoObject.getString("link");
+					Log.i("info", homeLogo);
 					
 					JSONObject awayLogoObject = awayTeam.getJSONObject("team-logo");
 					String awayLogo = awayLogoObject.getString("link");
+					Log.i("info", awayLogo);
+					
 					Integer homeScore;
 					Integer awayScore;
 					
@@ -260,6 +282,16 @@ public class scoresFragment extends ListFragment {
 			return result;
 		}
 		
+	}
+	
+	public static Drawable LoadImageFromWebOperations(String url) {
+	    try {
+	        InputStream is = (InputStream) new URL(url).getContent();
+	        Drawable d = Drawable.createFromStream(is, "src name");
+	        return d;
+	    } catch (Exception e) {
+	        return null;
+	    }
 	}
 	
 
