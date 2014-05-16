@@ -7,13 +7,23 @@ public class Headline {
 	private String description;
 	private String imageURL;
 	private Date published;
+	private String url;
 	
-	public Headline(String headline,String description,String imageURL,Date published){
+	public Headline(String headline,String description,String imageURL,Date published, String url){
 		this.headline = headline;
 		this.description = description;
 		this.imageURL = imageURL;
 		this.published = published;
+		this.url = url;
 		
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public String getHeadline() {
