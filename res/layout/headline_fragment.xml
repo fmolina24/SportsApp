@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+	
+    <ImageView
+        android:id="@+id/headlinePic"
+        android:layout_width="fill_parent"
+		android:layout_height="130dp"
+		android:layout_centerHorizontal="true"
+		android:scaleType="fitCenter"	  	
+        />
+    
     <TextView
         android:id="@+id/headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:paddingTop="130dp"
         android:text="HEADLINE"
-        android:textSize="25sp" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/description"

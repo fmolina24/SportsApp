@@ -1,15 +1,10 @@
 package com.example.sportsapp;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -20,22 +15,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.json.XML;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.format.DateFormat;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.model.sportsapp.Game;
+import com.fedorvlasov.lazylist.ImageLoader;
 import com.model.sportsapp.Headline;
 
 
@@ -113,6 +101,7 @@ public class HeadlinesFragment extends ListFragment {
 	class MyAdapter extends ArrayAdapter{
 		private List<Headline> myList;
 		private Context context;
+		ImageLoader imageLoader=new ImageLoader(context);
 
 		public MyAdapter(Context context, int resource, List<Headline> result) {
 			super(context, resource, result);
@@ -126,6 +115,7 @@ public class HeadlinesFragment extends ListFragment {
 			TextView desc;
 			TextView date;
 			TextView url;
+			ImageView headlinePic;
 			
 			//reuse converView if you can to speed up scrolling on listview
 			if(convertView == null){
@@ -137,6 +127,7 @@ public class HeadlinesFragment extends ListFragment {
 				convertView.setTag(R.id.description, convertView.findViewById(R.id.description));
 				convertView.setTag(R.id.date, convertView.findViewById(R.id.date));
 				convertView.setTag(R.id.seeMore, convertView.findViewById(R.id.seeMore));
+				convertView.setTag(R.id.headlinePic, convertView.findViewById(R.id.headlinePic));
 			}
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 			
@@ -144,13 +135,15 @@ public class HeadlinesFragment extends ListFragment {
 			desc = (TextView) convertView.getTag(R.id.description);
 			date = (TextView) convertView.getTag(R.id.date);
 			url = (TextView)convertView.getTag(R.id.seeMore);
-
+			headlinePic = (ImageView)convertView.getTag(R.id.headlinePic);
+			imageLoader.DisplayImage(myList.get(position).getImageURL(), headlinePic);
 			headline.setText(myList.get(position).getHeadline());
 			desc.setText(myList.get(position).getDescription());
 			date.setText(df.format(myList.get(position).getPublished()));
 			String linkText = "<a href='"+myList.get(position).getUrl()+"'>See more</a>";
 			url.setText(Html.fromHtml(linkText));
 			url.setMovementMethod(LinkMovementMethod.getInstance());
+			
 			return convertView;
 		}
 
@@ -204,7 +197,7 @@ public class HeadlinesFragment extends ListFragment {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					result.add(new Headline(headLine,description,imgLink,date,storyLink));
+					result.add(new Headline(headLine.trim(),description,imgLink,date,storyLink));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
