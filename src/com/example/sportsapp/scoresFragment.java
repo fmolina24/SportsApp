@@ -236,13 +236,23 @@ public class scoresFragment extends ListFragment {
 						homeScore =null;
 						awayScore = null;
 					}
-		
+					
+					//GET timeElapsed and state if not pre-game
+					String timeElapsed = "";
+					String state = "";
+					if(!status.equalsIgnoreCase("Pre-Game")){
+						timeElapsed = gamestate.getString("display_status1");
+						state = gamestate.getString("display_status2");
+					}
+						
+					Log.i("state", timeElapsed);
+					Log.i("state", state);
 					
 
 					
 					result.add(new Game(id,homeNickname,awayNickname,
 							homeScore,awayScore,
-							status,gameDate,homeLogo,awayLogo,tv));
+							status,gameDate,homeLogo,awayLogo,tv,timeElapsed,state));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

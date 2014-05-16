@@ -14,11 +14,13 @@ public class Game {
 	private String homeLogo;
 	private String awayLogo;
 	private String tv;
+	private String timeElapsed;
+	private String state;
 	
 	
 	public Game(int gameid,String homeTeam,String awayTeam,Integer homeScore,
 			Integer awayScore,String status,Date time,String homeLogo,
-			String awayLogo,String tv){
+			String awayLogo,String tv,String timeElapsed,String state){
 		this.gameid = gameid;
 		this.homeTeam = homeTeam;
 		this.awayTeam = awayTeam;
@@ -29,8 +31,28 @@ public class Game {
 		this.homeLogo = homeLogo;
 		this.awayLogo = awayLogo;
 		this.tv = tv;
-		
-		
+		this.timeElapsed = timeElapsed;
+		this.state = state;
+	}
+	
+
+	public String getTimeElapsed() {
+		return timeElapsed;
+	}
+
+
+	public void setTimeElapsed(String timeElapsed) {
+		this.timeElapsed = timeElapsed;
+	}
+
+
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 
