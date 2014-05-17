@@ -60,7 +60,6 @@ public class HeadlinesFragment extends ListFragment {
 		private static final String TAG = "HttpGetTask";
 		private String apiKey =  "5a3kx6j8sb3nvppya2hxx6jz";
 		
-		
 		private String URL = "";
 
 		AndroidHttpClient mClient = AndroidHttpClient.newInstance("");
