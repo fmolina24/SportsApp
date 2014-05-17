@@ -3,7 +3,8 @@
 
 # generated files
 bin/
-gen/
+/gen/android/
+/gen/com/example
 
 # Local configuration file (sdk path, etc)
 local.properties
