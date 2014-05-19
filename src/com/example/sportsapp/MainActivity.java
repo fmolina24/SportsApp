@@ -1,6 +1,5 @@
 package com.example.sportsapp;
 
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -13,11 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
