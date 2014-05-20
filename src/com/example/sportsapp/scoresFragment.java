@@ -24,6 +24,7 @@ import org.json.XML;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -41,14 +42,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.model.sportsapp.Game;
 
 
 public class scoresFragment extends ListFragment {
+	private List<Game> myList;
 	String sport="";
 	
+	
+	
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		// TODO Auto-generated method stub
+		super.onListItemClick(l, v, position, id);
+		((MainActivity)getActivity()).startGameFragment(myList.get(position));
+		
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,7 +114,7 @@ public class scoresFragment extends ListFragment {
 		}
 	}
 	class MyAdapter extends ArrayAdapter{
-		private List<Game> myList;
+		
 		private Context context;
 
 		public MyAdapter(Context context, int resource, List<Game> result) {

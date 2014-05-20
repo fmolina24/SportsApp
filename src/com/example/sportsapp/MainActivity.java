@@ -1,5 +1,8 @@
 package com.example.sportsapp;
 
+import com.model.sportsapp.Game;
+
+
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -120,6 +123,21 @@ public class MainActivity extends ActionBarActivity implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void startGameFragment(Game g){
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("game", g);
+		
+		GameFragment frag = new GameFragment();
+		frag.setArguments(bundle);
+		
+		mFragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = mFragmentManager
+				.beginTransaction();
+		fragmentTransaction.replace(R.id.container,frag);
+		fragmentTransaction.commit();
+		
 	}
 
 }
