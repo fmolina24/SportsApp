@@ -181,7 +181,13 @@ public class HeadlinesFragment extends ListFragment {
 					
 					//GET FIRST IMAGE
 					JSONArray images = headline.getJSONArray("images");
-					JSONObject img = images.getJSONObject(0);
+					JSONObject img;
+					if(images.length() > 1){
+						img = images.getJSONObject(1);
+					}
+					else{
+						img = images.getJSONObject(0);
+					}
 					JSONObject links = headline.getJSONObject("links");
 					JSONObject webLinks = links.getJSONObject("web");
 					String imgLink = img.getString("url");
