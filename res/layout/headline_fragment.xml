@@ -6,9 +6,9 @@
     <ImageView
         android:id="@+id/headlinePic"
         android:layout_width="fill_parent"
-		android:layout_height="130dp"
+		android:layout_height="324px"
 		android:layout_centerHorizontal="true"
-		android:scaleType="fitCenter"	  	
+		android:scaleType="centerCrop"	  	
         />
     
     <TextView
@@ -16,7 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:paddingTop="130dp"
+        android:paddingTop="326px"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="HEADLINE"
         android:textSize="24sp" />
 
@@ -26,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/date"
+        android:padding="5dp"
         android:text="DESC" />
 
     <TextView
@@ -35,6 +38,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/headline"
         android:text="date"
+        android:paddingLeft="5dp"
         android:textSize="10dp" />
 
     <TextView
@@ -44,6 +48,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/description"
         android:text="See more..."
-        android:textSize="14sp" />
+        android:paddingLeft="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="16sp" />
 
 </RelativeLayout>
