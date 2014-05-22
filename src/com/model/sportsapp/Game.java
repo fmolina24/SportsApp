@@ -1,9 +1,10 @@
 package com.model.sportsapp;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class Game {
+public class Game implements Serializable {
 	private int gameid;
 	private String homeTeam;
 	private String awayTeam;

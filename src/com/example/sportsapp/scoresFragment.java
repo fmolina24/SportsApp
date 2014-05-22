@@ -24,6 +24,7 @@ import org.json.XML;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -41,14 +42,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fedorvlasov.lazylist.ImageLoader;
 import com.model.sportsapp.Game;
 
 
 public class scoresFragment extends ListFragment {
+	private List<Game> myList;
 	String sport="";
+	ImageLoader imageLoader=new ImageLoader(getActivity());
 	
+	
+	
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		// TODO Auto-generated method stub
+		super.onListItemClick(l, v, position, id);
+		((MainActivity)getActivity()).startGameFragment(myList.get(position));
+		
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,8 +84,8 @@ public class scoresFragment extends ListFragment {
 		String todayDate = df.format(today);
 		
 		
-//		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period="+todayDate;
-		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period=20140514";
+		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period="+todayDate;
+		//private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period=20140514";
 		
 		AndroidHttpClient mClient = AndroidHttpClient.newInstance("");
 
@@ -100,7 +116,7 @@ public class scoresFragment extends ListFragment {
 		}
 	}
 	class MyAdapter extends ArrayAdapter{
-		private List<Game> myList;
+		
 		private Context context;
 
 		public MyAdapter(Context context, int resource, List<Game> result) {
@@ -131,6 +147,7 @@ public class scoresFragment extends ListFragment {
 				convertView.setTag(R.id.awayLogo, convertView.findViewById(R.id.awayLogo));
 				convertView.setTag(R.id.homeLogo, convertView.findViewById(R.id.homeLogo));
 				
+				
 			}
 			
 			home = (TextView) convertView.getTag(R.id.homeLabel);
@@ -140,13 +157,9 @@ public class scoresFragment extends ListFragment {
 			homeLogo = (ImageView) convertView.getTag(R.id.homeLogo);
 			awayLogo = (ImageView) convertView.getTag(R.id.awayLogo);
 			
-			Drawable homeTeamLogo = LoadImageFromWebOperations(myList.get(position).getHomeLogo());
-			Drawable awayTeamLogo = LoadImageFromWebOperations(myList.get(position).getAwayLogo());
 			
-			homeLogo.setImageDrawable(homeTeamLogo);
-			awayLogo.setImageDrawable(awayTeamLogo);
-			
-			
+			imageLoader.DisplayImage(myList.get(position).getAwayLogo(), awayLogo);
+			imageLoader.DisplayImage(myList.get(position).getHomeLogo(), homeLogo);
 			
 			home.setText(myList.get(position).getHomeTeam());
 			away.setText(myList.get(position).getAwayTeam());
@@ -285,15 +298,6 @@ public class scoresFragment extends ListFragment {
 		
 	}
 	
-	public static Drawable LoadImageFromWebOperations(String url) {
-	    try {
-	        InputStream is = (InputStream) new URL(url).getContent();
-	        Drawable d = Drawable.createFromStream(is, "src name");
-	        return d;
-	    } catch (Exception e) {
-	        return null;
-	    }
-	}
 	
 
 
