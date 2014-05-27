@@ -84,8 +84,8 @@ public class scoresFragment extends ListFragment {
 		String todayDate = df.format(today);
 		
 		
-		//private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period="+todayDate;
-		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period=20140514";
+		private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period="+todayDate;
+		//private String URL = "http://scores.nbcsports.msnbc.com/ticker/data/gamesMSNBC.js.asp?jsonp=true&sport="+sport+"&period=20140514";
 		
 		AndroidHttpClient mClient = AndroidHttpClient.newInstance("");
 
