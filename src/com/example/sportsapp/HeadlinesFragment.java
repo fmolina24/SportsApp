@@ -137,7 +137,7 @@ public class HeadlinesFragment extends ListFragment {
 			headlinePic = (ImageView)convertView.getTag(R.id.headlinePic);
 			imageLoader.DisplayImage(myList.get(position).getImageURL(), headlinePic);
 			headline.setText(myList.get(position).getHeadline());
-			desc.setText(myList.get(position).getDescription());
+			desc.setText(myList.get(position).getDescription().trim());
 			date.setText(df.format(myList.get(position).getPublished()));
 			String linkText = "<a href='"+myList.get(position).getUrl()+"'>See more</a>";
 			url.setText(Html.fromHtml(linkText));
